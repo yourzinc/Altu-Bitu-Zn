@@ -2,33 +2,57 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-void solution(vector<char> v, int k)
-{
-    string answer = "";
-    
-    vector<bool> number(10) ={0}; // 사용한 숫자 check
-    
-    for(int i=0; i<k; k++)
-    {
-        if(v[i]=='<')
-        {
 
-        }
-        else //v[i]=='>'
+bool check(int a, int b, char opr)
+{
+    if( (opr=='<' && a<b) || (opr=='>' && a>b) ) return true;
+    return false;
+}
+
+vector<string> solution(vector<char> v, int k)
+{
+    vector<string> pass_number;
+    
+    string answer = "";
+    bool flag;
+
+    vector<int> number(10);
+    for(int i=0; i<10; i++) number[i]=i;
+    
+    do
+    {
+        flag = true;
+        for(int i=0; i<k; i++)
         {
-            
+            if(!check(number[i],number[i+1],v[i]))
+            {
+                flag = false;
+                break;
+            }
         }
-    }
+        
+        if(flag)
+        {
+            for(int i=0; i<=k; i++) answer+=number[i]+'0';
+            pass_number.push_back(answer);
+            answer="";
+        }
+        
+        reverse(number.begin()+k+1, number.end());
+    } while(next_permutation(number.begin(),number.end()));
+    
+    return pass_number;
 }
 
 int main()
 {
     // input
     int k;
-    cin>>k; //k= 부동호 문자의 개수
+    cin>>k;
     
     cin.ignore();
     
@@ -43,9 +67,12 @@ int main()
     while(stream>>c) v.push_back(c);
     
     // solution
-    solution(v,k);
-    
-    // print
+    vector<string> vv = solution(v,k);
+    sort(vv.begin(),vv.end());
 
+    // print
+    cout<<vv[vv.size()-1]<<"\n";
+    cout<<vv[0];
+    
     return 0;
 }
