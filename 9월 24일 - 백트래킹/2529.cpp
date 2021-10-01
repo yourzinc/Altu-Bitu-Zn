@@ -6,7 +6,6 @@
 
 using namespace std;
 
-
 bool check(int a, int b, char opr)
 {
     if( (opr=='<' && a<b) || (opr=='>' && a>b) ) return true;
